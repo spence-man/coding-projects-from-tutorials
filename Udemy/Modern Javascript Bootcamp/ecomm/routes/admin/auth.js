@@ -19,15 +19,14 @@ router.post(
   [requireEmail, requirePassword, requirePasswordConfirmation],
   async (req, res) => {
     const errors = validationResult(req);
-    console.log(errors);
+
+    if (!errors.isEmpty()) {
+      return res.send(signupTemplate({ req, errors }));
+    }
 
     const { email, password, passwordConfirmation } = req.body;
-
-    // Create a user in our user repo to represent this person
     const user = await usersRepo.create({ email, password });
 
-    // Store the id of that user inside the users cookie
-    // req.session === {} Added by cookie session
     req.session.userId = user.id;
 
     res.send("Account created");
