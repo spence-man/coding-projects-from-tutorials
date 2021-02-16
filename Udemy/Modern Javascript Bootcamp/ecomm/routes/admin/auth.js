@@ -7,6 +7,8 @@ const {
   requireEmail,
   requirePassword,
   requirePasswordConfirmation,
+  requireEmailExists,
+  requireValidPasswordForUser,
 } = require("./validators");
 const router = express.Router(); // links back to our app in the main index.js route
 
@@ -42,25 +44,20 @@ router.get("/signin", (req, res) => {
   res.send(signinTemplate());
 });
 
-router.post("/signin", async (req, res) => {
-  const { email, password } = req.body;
-  const user = await usersRepo.getOneBy({ email });
+router.post(
+  "/signin",
+  [requireEmailExists, requireValidPasswordForUser],
+  async (req, res) => {
+    const errors = validationResult(req);
+    console.log(errors);
 
-  if (!user) {
-    return res.send("Email not found");
+    const { email } = req.body;
+
+    const user = await usersRepo.getOneBy({ email });
+
+    req.session.userId = user.id;
+    res.send("Logged In");
   }
-
-  const validPassword = await usersRepo.comparePasswords(
-    user.password,
-    password
-  );
-
-  if (!validPassword) {
-    return res.send("Invalid password");
-  }
-
-  req.session.userId = user.id;
-  res.send("Logged In");
-});
+);
 
 module.exports = router;
