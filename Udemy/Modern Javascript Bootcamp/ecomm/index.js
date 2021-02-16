@@ -6,6 +6,7 @@ const authRouter = require("./routes/admin/auth");
 const app = express();
 
 // Middlewares
+app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true })); // Wires up middleware and detects Post submission and parses data
 app.use(
   cookieSession({
