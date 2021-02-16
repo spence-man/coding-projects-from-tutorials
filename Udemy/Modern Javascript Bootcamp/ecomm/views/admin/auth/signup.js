@@ -1,16 +1,5 @@
 const layout = require("../layout");
-
-const getError = (errors, prop) => {
-  // prop === 'email' or 'password' etc
-  // errors.mapped() converts the array of error messages, to objects with each key as
-  // a param
-  // { email: { msg: 'Invalid Email' }, password: {}, etc}
-  try {
-    return errors.mapped()[prop].msg;
-  } catch (err) {
-    return "";
-  }
-};
+const { getError } = require("../../helpers.js");
 
 module.exports = ({ req, errors }) => {
   return layout({
