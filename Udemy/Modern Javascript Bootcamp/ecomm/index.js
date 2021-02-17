@@ -7,7 +7,7 @@ const productsRouter = require("./routes/admin/products");
 const app = express();
 
 // Middlewares
-app.use(express.static("public"));
+app.use(express.static("public")); // To serve static files such as images, CSS files, and JavaScript files
 app.use(bodyParser.urlencoded({ extended: true })); // Wires up middleware and detects Post submission and parses data
 app.use(
   cookieSession({
