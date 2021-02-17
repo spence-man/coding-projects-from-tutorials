@@ -27,7 +27,7 @@ router.post(
 
     req.session.userId = user.id;
 
-    res.send("Account created");
+    res.redirect("/admin/products");
   }
 );
 
@@ -50,7 +50,8 @@ router.post(
     const user = await usersRepo.getOneBy({ email });
 
     req.session.userId = user.id;
-    res.send("Logged In");
+
+    res.redirect("/admin/products");
   }
 );
 
